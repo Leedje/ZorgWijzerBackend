@@ -1,43 +1,46 @@
 package com.amarant.zorgwijzerbackend.models;
+import com.google.cloud.firestore.annotation.PropertyName;
+import com.google.cloud.firestore.DocumentSnapshot;
 
+import java.time.Duration;
 import java.util.Date;
-import java.util.UUID;
 
 public class Appointment {
 
     public Appointment () {};
 
-    private UUID id = UUID.randomUUID();
-    private String title;
-    private String resident;
+    private String id;
+    private String activity;
+    private String client;
     private Date dateTime;
     private Integer duration;
     private String location;
+    private String priority;
+    private boolean isCompleted;
 
-    private Reminder reminder;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getActivity() {
+        return activity;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setActivity(String activity) {
+        this.activity = activity;
     }
 
-    public String getResident() {
-        return resident;
+    public String getClient() {
+        return client;
     }
 
-    public void setResident(String resident) {
-        this.resident = resident;
+    public void setClient(String client) {
+        this.client = client;
     }
 
     public Date getDateTime() {
@@ -64,11 +67,38 @@ public class Appointment {
         this.location = location;
     }
 
-    public Reminder getReminder() {
-        return reminder;
+
+    public boolean isCompleted() {
+        return isCompleted;
     }
 
-    public void setReminder(Reminder reminder) {
-        this.reminder = reminder;
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+    public static Appointment fromDocument(DocumentSnapshot doc) {
+        Appointment appointment = new Appointment();
+        appointment.setId(doc.getId()); // Firestore document ID
+        appointment.setActivity(doc.getString("Activiteit"));
+        appointment.setClient(doc.getString("Client"));
+        appointment.setDateTime(doc.getDate("Datum & Tijd"));
+        Long durationValue = doc.getLong("Duur");
+        if (durationValue != null) {
+            appointment.setDuration(durationValue.intValue());
+        }
+        appointment.setLocation(doc.getString("Locatie"));
+        appointment.setPriority(doc.getString("Zwaarte"));
+        Boolean completedValue = doc.getBoolean("isAfgerond");
+        appointment.setCompleted(completedValue != null && completedValue);
+
+        return appointment;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
 }

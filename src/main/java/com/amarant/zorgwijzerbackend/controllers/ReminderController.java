@@ -1,26 +1,32 @@
 package com.amarant.zorgwijzerbackend.controllers;
 
 import com.amarant.zorgwijzerbackend.dtos.ReminderDTO;
+import com.amarant.zorgwijzerbackend.dtos.ReminderUnsuccessfulAppointmentDTO;
+import com.amarant.zorgwijzerbackend.repository.ReminderRepository;
+import com.amarant.zorgwijzerbackend.services.ReminderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
+@RequestMapping("/api/reminders")
 public class ReminderController
 {
-    @GetMapping("/reminders")
-    public ResponseEntity<List<ReminderDTO>> GetAllReminders(){
-        return ResponseEntity.ok(null);
+    @Autowired
+    ReminderService reminderService;
+
+    @GetMapping
+    public ResponseEntity<List<ReminderDTO>> GetAllReminders() throws ExecutionException, InterruptedException{
+        List<ReminderDTO> reminders = reminderService.getAllReminders();
+        return ResponseEntity.ok(reminders);
     }
 
-    @PostMapping("/reminders/create")
-    public ResponseEntity<Boolean> CreateReminder(@RequestBody ReminderDTO reminderDTO){
-
-        return ResponseEntity.ok(false);
+    @GetMapping("/unsuccessful-appointments")
+    public ResponseEntity<List<ReminderUnsuccessfulAppointmentDTO>> GetUnsuccessfulAppointmentReminders() throws ExecutionException, InterruptedException{
+        List<ReminderUnsuccessfulAppointmentDTO> unsuccessfulReminders = reminderService.getAllUnsuccessfulAppointmentReminders();
+        return ResponseEntity.ok(unsuccessfulReminders);
     }
-
 }

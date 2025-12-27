@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Repository
 public class AppointmentRepository {
@@ -38,8 +39,8 @@ public class AppointmentRepository {
                     .get()
                     .getDocuments()
                     .stream()
-                    .map(doc -> doc.toObject(Appointment.class))
-                    .toList();
+                    .map(Appointment::fromDocument).collect(Collectors.toList());
+
         }
 
 }

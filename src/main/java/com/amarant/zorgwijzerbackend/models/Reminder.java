@@ -1,27 +1,28 @@
 package com.amarant.zorgwijzerbackend.models;
 
 
+import com.google.cloud.firestore.DocumentSnapshot;
+
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class Reminder {
 
     public Reminder() {}
 
-    private UUID id = UUID.randomUUID();
+    private String id;
     private String title;
+    private String activity;
     private String description;
-    private Date timeSent;
+    private String client;
+    private Date timeCreated;
     private Date appointmentTime;
 
-    List<Appointment> appointments;
-
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -33,12 +34,12 @@ public class Reminder {
         this.title = title;
     }
 
-    public Date getTimeSent() {
-        return timeSent;
+    public Date getTimeCreated() {
+        return timeCreated;
     }
 
-    public void setTimeSent(Date timeSent) {
-        this.timeSent = timeSent;
+    public void setTimeCreated(Date timeCreated) {
+        this.timeCreated = timeCreated;
     }
 
     public String getDescription() {
@@ -55,5 +56,34 @@ public class Reminder {
 
     public void setAppointmentTime(Date appointmentTime) {
         this.appointmentTime = appointmentTime;
+    }
+
+    public static Reminder fromDocument(DocumentSnapshot doc) {
+        Reminder reminder = new Reminder();
+
+        reminder.setId(doc.getId());
+        reminder.setTitle(doc.getString("Titel"));
+        reminder.setActivity(doc.getString("Activiteit"));
+        reminder.setClient(doc.getString("Client"));
+        reminder.setTimeCreated(doc.getDate("DatumTijdAfspraak"));
+        reminder.setAppointmentTime(doc.getDate("tijdReminderGemaakt"));
+        reminder.setDescription(doc.getString("Beschrijving"));
+        return reminder;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
     }
 }

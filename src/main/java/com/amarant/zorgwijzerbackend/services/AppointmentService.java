@@ -2,6 +2,7 @@ package com.amarant.zorgwijzerbackend.services;
 
 import com.amarant.zorgwijzerbackend.dtos.AppointmentDTO;
 import com.amarant.zorgwijzerbackend.mapper.AppointmentMapper;
+import com.amarant.zorgwijzerbackend.models.Appointment;
 import com.amarant.zorgwijzerbackend.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,9 +28,10 @@ public class AppointmentService {
     }
 
     public List<AppointmentDTO> getAllAppointments() throws ExecutionException, InterruptedException {
-       return appointmentRepository.getAllAppointments()
+        return appointmentRepository.getAllAppointments()
                 .stream()
                 .map(appointmentMapper::AppointmentToDto)
                 .collect(Collectors.toList());
+
     }
 }
