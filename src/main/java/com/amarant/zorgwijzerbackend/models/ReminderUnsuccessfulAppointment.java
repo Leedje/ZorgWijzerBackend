@@ -15,6 +15,7 @@ public class ReminderUnsuccessfulAppointment {
     private boolean completed;
     private String location;
     private Integer staff;
+
     private String phoneNumber;
     private String urgency;
     private String priority;
