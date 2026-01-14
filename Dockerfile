@@ -1,5 +1,5 @@
 # ---- Build Stage ----
-FROM gradle:latest AS build
+FROM gradle:9.2.1-jdk21-temurin AS build
 WORKDIR /app
 COPY . .
 RUN gradle clean build -x test
